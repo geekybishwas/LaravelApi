@@ -14,9 +14,38 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //
+    public function index($flag)
+    {   
+        // Flag=1 (Active) Flag=0 (All user)
+        $query=User::select('email','name');
+        if($flag==1){
+            $query->where('status',1);
+        }
+        elseif($flag==0){
+            $query->where('status',0);
+        }
+        else{
+            return response()->json([
+                'message'=>'Invalid parameter passed,it can be either 1 or 0',
+                'status'=>0
+            ],400);
+        }
+        $users=$query->get();
+        // $users=User::all();
+        if(count($users)>0){
+            $response=[
+                'message'=>count($users) . ' users found',
+                'status'=>1,
+                'data'=>$users
+            ];
+        }
+        else{
+            $response=[
+                'message'=>count($users). ' users found',
+                'status'=>0
+            ];
+        }
+        return response()->json($response,200);
     }
 
     /**
@@ -81,6 +110,11 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
+        $user=User::findOrFail($id);
+        return response()->json([
+            'message'=>'Getting User',
+            'data'=>$user
+        ]);
     }
 
     /**

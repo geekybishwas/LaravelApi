@@ -22,3 +22,5 @@ Route::get('/test',function(){
 });
 
 Route::post('user/store',[UserController::class,'store']);
+Route::get('user/get/{flag}',[UserController::class,'index']);
+Route::get('user/{id}',[UserController::class,'show']);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -22,9 +23,17 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        //
+        $post=new Post;
+        $post->title=$request->title;
+        $post->content=$request->content;
+        $post->save();
+
+        return response()->json([
+            'message'=>'New Post Created !!',
+            'post'=>$post,
+        ],200);
     }
 
     /**
@@ -32,7 +41,10 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return response()->json([
+            'message'=>'Single Post',
+            'post'=>$post,
+        ],200);
     }
 
     /**
@@ -40,7 +52,15 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        // dd($request->all());
+        $post->title=$request->title ?? $post->title;
+        $post->content=$request->content ?? $post->content;
+        $post->save();
+
+        return response()->json([
+            'message'=>'Post Updated',
+            'post'=>$post
+        ]);
     }
 
     /**
@@ -49,5 +69,9 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         //
+        return response()->json([
+            'message'=>'Post Deleted',
+            'post'=>$post->delete()
+        ],200);
     }
 }

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreRequest;
+// use app\Http\Controllers\ApiController;
 
 class PostController extends Controller
 {
@@ -14,6 +15,8 @@ class PostController extends Controller
     public function index()
     {
         $posts=Post::get();
+
+        // return $this->successResponse($posts,'List of posts');
         return response()->json([
             'message'=>'List of posts',
             'posts'=>$posts
@@ -25,15 +28,15 @@ class PostController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $post=new Post;
-        $post->title=$request->title;
-        $post->content=$request->content;
-        $post->save();
+        $post=Post::create($request->validated());
+        // $post->create($request->validated());
 
         return response()->json([
             'message'=>'New Post Created !!',
             'post'=>$post,
         ],200);
+
+        // return $this->successResponse($post,'Post Created');
     }
 
     /**
@@ -45,22 +48,23 @@ class PostController extends Controller
             'message'=>'Single Post',
             'post'=>$post,
         ],200);
+
+        // return $this->successResponse($post,'Post Show');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(StoreRequest $request, Post $post)
     {
         // dd($request->all());
-        $post->title=$request->title ?? $post->title;
-        $post->content=$request->content ?? $post->content;
-        $post->save();
+        $post->update($request->validated());
 
         return response()->json([
             'message'=>'Post Updated',
             'post'=>$post
         ]);
+        // return $this->successResponse($post,'Post Updated');
     }
 
     /**
@@ -68,10 +72,11 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
         return response()->json([
-            'message'=>'Post Deleted',
-            'post'=>$post->delete()
-        ],200);
+            'message'=>'Post deleted',
+            'post'=>null
+        ]);
+        // return $this->successResponse($post,'Post Destroy');
     }
 }

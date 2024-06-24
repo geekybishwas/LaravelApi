@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -15,3 +16,9 @@ Route::prefix('v1/')->group(function(){
     Route::put('posts/{post}',[PostController::class,'update']);
     Route::delete('posts/{post}',[PostController::class,'destroy']);
 });
+
+Route::get('/test',function(){
+    p('Working');
+});
+
+Route::post('user/store',[UserController::class,'store']);

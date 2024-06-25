@@ -24,3 +24,6 @@ Route::get('/test',function(){
 Route::post('user/store',[UserController::class,'store']);
 Route::get('user/get/{flag}',[UserController::class,'index']);
 Route::get('user/{id}',[UserController::class,'show']);
+Route::delete('user/delete/{user}',[UserController::class,'destroy']);
+Route::put('user/update/{id}',[UserController::class,'update']);
+Route::patch('user/change-password',[UserController::class,'changePassword']);
